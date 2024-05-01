@@ -1,0 +1,78 @@
+﻿@page "/javascript-should-not-be-used"
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>Blazor School Material</PageTitle>
+
+<h3 id="dom1" attribute1="@Attribute1Value">DOM with Blazor initiated attribute</h3>
+<h3 id="dom2" @attributes="AttributeDictionary">DOM with JS initiated attribute</h3>
+<h3 id="dom3">
+    Parent DOM
+    @if (ShowDOM)
+    {
+        <p id="child-dom">Hello Blazor School! (Child DOM)</p>
+    }
+</h3>
+<h3 id="dom4">@DOMContent</h3>
+
+<div style="display: flex; flex-direction:column; width: 25%">
+    <button type="button" @onclick="UpdateBlazorInitiatedAttributeAsync">Update Blazor Initiated attribute (JavaScript)</button>
+    <button type="button" @onclick="UpdateBlazorInitiatedAttributeBlazor">Update Blazor Initiated attribute (Blazor)</button>
+    <button type="button" @onclick="InitiateAttributeValueAsync">Initiate attribute (JavaScript)</button>
+    <button type="button" @onclick="InitiateAttributeValueBlazor">Initiate attribute (Blazor)</button>
+    <button type="button" @onclick="ToggleChildDOMAsync">Toggle child DOM (JavaScript)</button>
+    <button type="button" @onclick="ToggleChildDOMBlazor">Toggle child DOM (Blazor)</button>
+    <button type="button" @onclick="UpdateContentEmptyDOMAsync">Update DOM content (JavaScript)</button>
+    <button type="button" @onclick="UpdateContentEmptyDOMBlazor">Update DOM content (Blazor)</button>
+</div>
+
+@code {
+    public string Attribute1Value { get; set; } = "blazor-initiated-value";
+    public Dictionary<string, object> AttributeDictionary { get; set; } = new();
+    public bool ShowDOM { get; set; } = true;
+    public string DOMContent { get; set; } = "Hello Blazor School!";
+
+    public async Task UpdateBlazorInitiatedAttributeAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("UpdateBlazorInitiatedAttribute");
+    }
+
+    public void UpdateBlazorInitiatedAttributeBlazor()
+    {
+        Attribute1Value = "updated-by-blazor";
+        StateHasChanged();
+    }
+
+    public async Task InitiateAttributeValueAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("InitiateAttributeValue");
+    }
+
+    public void InitiateAttributeValueBlazor()
+    {
+        AttributeDictionary["attribute1"] = "blazor-initiated-value";
+        StateHasChanged();
+    }
+
+    public async Task ToggleChildDOMAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("ToggleChildDOM");
+    }
+
+    public void ToggleChildDOMBlazor()
+    {
+        ShowDOM = !ShowDOM;
+        StateHasChanged();
+    }
+
+    public async Task UpdateContentEmptyDOMAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("UpdateContentEmptyDOM");
+    }
+
+    public void UpdateContentEmptyDOMBlazor()
+    {
+        DOMContent = "Updated by Blazor";
+        StateHasChanged();
+    }
+}

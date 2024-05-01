@@ -1,0 +1,39 @@
+﻿@page "/javascript-can-be-used"
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>Blazor School Material</PageTitle>
+
+<h3 id="dom1" attribute1="blazor-initiated-value">DOM with Blazor initiated attribute</h3>
+<h3 id="dom2">DOM with JS initiated attribute</h3>
+<h3 id="dom3">Parent DOM</h3>
+<h3 id="dom4"></h3>
+
+<div style="display: flex; flex-direction:column; width: 25%">
+    <button type="button" @onclick="UpdateBlazorInitiatedAttributeAsync">Update Blazor Initiated attribute</button>
+    <button type="button" @onclick="InitiateAttributeValueAsync">Initiate attribute</button>
+    <button type="button" @onclick="ToggleChildDOMAsync">Toggle child DOM</button>
+    <button type="button" @onclick="UpdateContentEmptyDOMAsync">Update DOM content</button>
+</div>
+
+@code {
+    public async Task UpdateBlazorInitiatedAttributeAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("UpdateBlazorInitiatedAttribute");
+    }
+
+    public async Task InitiateAttributeValueAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("InitiateAttributeValue");
+    }
+
+    public async Task ToggleChildDOMAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("ToggleChildDOM");
+    }
+
+    public async Task UpdateContentEmptyDOMAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("UpdateContentEmptyDOM");
+    }
+}
